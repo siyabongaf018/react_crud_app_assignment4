@@ -1,0 +1,60 @@
+.App{
+    margin: 30px auto;
+    padding: 30px;
+   
+ }
+.header{
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+
+.btn{
+    display: inline-block;
+    background: #164B60;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.member{
+    background: #f4f4f4;
+    margin: 5px;
+    padding: 10px 20px;
+    position: relative;
+    justify-content: center;
+}
+
+.member h3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.member img{
+    width: 50px;
+    border-radius: 50% 50% 50% 50%;
+    
+}
+
+.Add_form{
+    justify-content: center;
+    align-items: center;
+}
+
+.form_control label{
+    display: block;
+}
+.form_control{
+    margin-left: 15%;
+}
+.form_control input{
+    width: 50%;
+    height:20px;
+    margin: 5px;
+    padding: 3px 7px;
+    border-radius: 5px;
+    border-color: #fff;
+    border-bottom: #164B60;
+    
+}
