@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./style.css";
-
-const AddMemberDetails = ({ addDataToLocalStorage }) => {
+import "./pic.png";
+const AddMemberDetails = ({ addDataToLocalStorage, changeShowAddMember }) => {
   const [formData, setFormData] = useState({
     imageData: "",
     memberName: "",
@@ -22,29 +22,38 @@ const AddMemberDetails = ({ addDataToLocalStorage }) => {
     addDataToLocalStorage(formData);
     setFormData({ imageData: "", memberName: "", memberJobTitle: "" });
     alert("Member save!!");
+    changeShowAddMember();
   };
 
   return (
     <form className="Add_form" onSubmit={handleSubmit}>
       <div className="form_control">
         <div className="image-preview">
-          {formData.imageData && (
+          {formData.imageData ? (
             <img
               src={formData.imageData}
               alt="Preview"
               style={{ width: "50px", borderRradius: "50%" }}
             />
+          ) : (
+            <img
+              src="./pic.png"
+              alt="Preview"
+              style={{ width: "50px", height: "50px", borderRradius: "50%" }}
+            />
           )}
         </div>
         <input
+          className="image_input"
           type="file"
           accept="image/*"
           name="imageData"
           onChange={handleChange}
           required
         />
+        <span className="icon">➕</span>
       </div>
-
+      <br /><br />
       <div className="form_control">
         <input
           type="text"

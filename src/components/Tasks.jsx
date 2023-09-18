@@ -1,8 +1,12 @@
-import Task from "./Task"
+import Task from "./Task";
 
-
-const Tasks = ({ members, onDeleteMember, onEditMember }) => {
-     // Check if members is an array before mapping
+const Tasks = ({
+  members,
+  onDeleteMember,
+  onEditMember,
+  changeShowAddMember,
+}) => {
+  // Check if members is an array before mapping
   if (!Array.isArray(members)) {
     return <div>Members is not an array</div>;
   }
@@ -10,10 +14,16 @@ const Tasks = ({ members, onDeleteMember, onEditMember }) => {
   return (
     <>
       {members.map((user, index) => (
-        <Task key={index} index ={index} user={user} onDeleteMember={onDeleteMember} onEditMember={onEditMember} />
+        <Task
+          key={index}
+          index={index}
+          user={user}
+          onDeleteMember={onDeleteMember}
+          onEditMember={onEditMember}
+        />
       ))}
     </>
-  )
-}
+  );
+};
 
-export default Tasks
+export default Tasks;

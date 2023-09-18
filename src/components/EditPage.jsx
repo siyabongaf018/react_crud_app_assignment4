@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import "./style.css";
 const EditPage = () => {
   const { memberid } = useParams(); // Get the articleId from the URL parameters
-  const [members, setMembers] = useState({
-    imageData: "",
-    memberName: "",
-    memberJobTitle: "",
-  });
-  const { memberData, setMemberData } = useState();
-
-  const [formData, setFormData] = useState([]);
-  // const [formData, setFormData] = useState({
+  // const [members, setMembers] = useState({
   //   imageData: "",
   //   memberName: "",
   //   memberJobTitle: "",
   // });
+  const [members, setMembers] = useState([]);
+
+  const navigate = useNavigate();
+  const [storedMembersData, setStoredMembersData] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -27,44 +23,51 @@ const EditPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // localStorage.setItem("MemberData", JSON.stringify(formData));
-    //addDataToLocalStorage(formData);
-    setFormData({ imageData: "", memberName: "", memberJobTitle: "" });
+
+    const updatedFormData = storedMembersData.map((record, index) =>
+      index.toString() === memberid ? members : record
+    );
+    let oldData = [...storedMembersData];
+    let newData = oldData[memberid];
+
+    newData.imageData = members.imageData;
+    newData.memberName = members.memberName;
+    newData.memberJobTitle = members.memberJobTitle;
+
+    oldData[memberid] = newData;
+
+    setStoredMembersData(oldData);
+
+    localStorage.setItem("MemberData", JSON.stringify(storedMembersData));
+    setMembers({ imageData: "", memberName: "", memberJobTitle: "" });
     alert("Member save!!");
+    navigate("/");
   };
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("MemberData")) || [];
     //setMembers(storedData);
-    setFormData(storedData);
+    setStoredMembersData(storedData);
   }, []);
 
   useEffect(() => {
-    formData.forEach((user, index) => {
+    storedMembersData.forEach((user, index) => {
       if (index.toString() === memberid) {
-        setMembers((prevMembers) => ({
-          ...prevMembers,
-          imageData: user.imageData,
-          memberName: user.memberJobTitle,
-          memberJobTitle: user.memberJobTitle,
-        }));
+        const data = user;
+        setMembers(data);
       }
     });
-  }, [formData, memberid]);
+  }, [storedMembersData, memberid]);
 
   return (
     <div>
-
-      <NavLink to={{ pathname: `/` }}>
-        <button
-          color="primary"
-          aria-label="Edit"
-          className="btn"
-        >
-          ⬅ BACK
-        </button>
-      </NavLink>
-      <h2>EditPage {memberid}</h2>
+      <div className="back_nev">
+        <NavLink to={{ pathname: `/` }}>
+          <button color="primary" aria-label="Edit" className="btn">
+            ⬅ BACK
+          </button>
+        </NavLink>
+      </div>
 
       <form className="Add_form" onSubmit={handleSubmit}>
         <div className="form_control">
@@ -77,14 +80,18 @@ const EditPage = () => {
               />
             )}
           </div>
-          <input
-            type="file"
-            accept="image/*"
-            name="imageData"
-            onChange={handleChange}
-            required
-          />
+          <div className="input_Image_container">
+            <input
+              className="image_input"
+              type="file"
+              accept="image/*"
+              name="imageData"
+              onChange={handleChange}
+            />
+            <span className="icon">➕</span>
+          </div>
         </div>
+        <br /><br />
 
         <div className="form_control">
           <input
